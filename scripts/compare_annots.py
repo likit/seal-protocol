@@ -10,17 +10,16 @@ from pandas import read_csv
 mus = read_csv('trinity-mirounga.mouse.fa.annot.csv.fixed', header=0)
 dog = read_csv('mirounga-dog.fa.annot.csv', header=0)
 
+# removed transcripts with no orthologs
 dogflt = dog[dog.ortholog.notnull()]
 musflt = mus[mus.ortholog.notnull()]
 
 annotdog = set(dogflt['unique ID'].tolist())
 annotmus = set(musflt['unique ID'].tolist())
 
-annotdog = set(dogflt['unique ID'].tolist())
-annotmus = set(musflt['unique ID'].tolist())
-
 dogonly = set(annotdog).difference(set(annotmus))
 
+# print the number of unique transcripts
 print len(dogonly)
 
 idx = []
@@ -39,6 +38,7 @@ annotmus = set(musflt['Transcript family'].tolist())
 
 dogonly = set(annotdog).difference(set(annotmus))
 
+# print the number of unique transcripts
 print len(dogonly)
 
 idx = []

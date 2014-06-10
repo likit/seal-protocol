@@ -3,8 +3,8 @@
 
 library("org.Cf.eg.db")
 
-getEnsblId <- function(ortholog) {
-  geneid <- strsplit(ortholog, ' ')[[1]][3]
+getEnsblId <- function(homolog) {
+  geneid <- strsplit(homolog, ' ')[[1]][3]
   geneid <- strsplit(geneid, ':')[[1]][2]
   return(geneid)
 }
@@ -13,10 +13,27 @@ dog <- read.csv('dog_annots_only_id.txt', header=T,
                 stringsAsFactor=F)
 
 dog$ENSEMBL <- sapply(dog$ortholog, getEnsblId)
+dog$ENSEMBL <- sapply(dog$homolog, getEnsblId)
 
 symbs <- select(org.Cf.eg.db, keys=dog$ENSEMBL, keytype="ENSEMBL",
                 columns=c("SYMBOL", "ENTREZID"))
 
 d <- merge(dog, symbs, by.x="ENSEMBL", by.y="ENSEMBL", all.x=T)
 write.table(d[,c(1,3,4,5,12,13)], 'dog_annots_only_id_with_symbol.txt',
+                sep='\t', quote=F, col.names=TRUE)
+
+alldog <- read.csv('mirounga-dog.fa.annot.csv', header=T,
+                stringsAsFactor=F)
+alldog.flt <- alldog[which(alldog$ortholog != "" |
+                             alldog$homolog != ""),]
+
+alldog.flt$ENSEMBL <- sapply(alldog.flt$ortholog, getEnsblId)
+alldog.flt$ENSEMBL <- sapply(alldog.flt$homolog, getEnsblId)
+
+symbs <- select(org.Cf.eg.db, keys=alldog.flt$ENSEMBL,
+                keytype="ENSEMBL",
+                columns=c("SYMBOL", "ENTREZID"))
+
+d <- merge(alldog.flt, symbs, by.x="ENSEMBL", by.y="ENSEMBL", all.x=T)
+write.table(d[,c(1,2,3,4,11,12)], 'dog_annots_all_id_with_symbol.txt',
                 sep='\t', quote=F, col.names=TRUE)

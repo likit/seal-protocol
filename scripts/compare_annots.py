@@ -11,20 +11,26 @@ mus = read_csv('trinity-mirounga.mouse.fa.annot.csv.fixed', header=0)
 dog = read_csv('mirounga-dog.fa.annot.csv', header=0)
 
 # removed transcripts with no orthologs
-dogflt = dog[dog.ortholog.notnull()]
-musflt = mus[mus.ortholog.notnull()]
+dog_ortho = dog[dog.ortholog.notnull()]
+dog_homo = dog[dog.homolog.notnull()]
 
-annotdog = set(dogflt['unique ID'].tolist())
-annotmus = set(musflt['unique ID'].tolist())
+mus_ortho = mus[mus.ortholog.notnull()]
+mus_homo = mus[mus.homolog.notnull()]
+
+annotdog = set(dog_ortho['unique ID'].tolist())
+annotdog.update(set(dog_homo['unique ID'].tolist()))
+
+annotmus = set(mus_ortho['unique ID'].tolist())
+annotmus.update(set(mus_homo['unique ID'].tolist()))
 
 dogonly = set(annotdog).difference(set(annotmus))
 
 # print the number of unique transcripts
-print len(dogonly)
+print 'unique transcript = ', len(dogonly)
 
 idx = []
 
-for row in dogflt.iterrows():
+for row in dog.iterrows():
     features = row[1]
     if features['unique ID'] in dogonly:
         idx.append(row[0])
@@ -33,17 +39,19 @@ dogonly_table = dog.ix[idx]
 
 dogonly_table.to_csv('dog_annots_only_id.txt')
 
-annotdog = set(dogflt['Transcript family'].tolist())
-annotmus = set(musflt['Transcript family'].tolist())
+annotdog = set(dog_ortho['Transcript family'].tolist())
+annotdog.update(set(dog_homo['Transcript family'].tolist()))
+annotmus = set(mus_ortho['Transcript family'].tolist())
+annotmus.update(set(mus_homo['Transcript family'].tolist()))
 
 dogonly = set(annotdog).difference(set(annotmus))
 
 # print the number of unique transcripts
-print len(dogonly)
+print 'unique family = ', len(dogonly)
 
 idx = []
 
-for row in dogflt.iterrows():
+for row in dog.iterrows():
     features = row[1]
     if features['Transcript family'] in dogonly:
         idx.append(row[0])

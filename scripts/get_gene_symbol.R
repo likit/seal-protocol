@@ -12,15 +12,26 @@ getEnsblId <- function(homolog) {
 dog <- read.csv('dog_annots_only_id.txt', header=T,
                 stringsAsFactor=F)
 
-dog$ENSEMBL <- sapply(dog$ortholog, getEnsblId)
-dog$ENSEMBL <- sapply(dog$homolog, getEnsblId)
+dog_ortholog = dog[which(dog$ortholog != ""), ]
+dog_homolog = dog[which(dog$homolog != ""), ]
 
-symbs <- select(org.Cf.eg.db, keys=dog$ENSEMBL, keytype="ENSEMBL",
-                columns=c("SYMBOL", "ENTREZID"))
+dog_ortholog$ENSEMBL <- sapply(dog_ortholog$ortholog, getEnsblId)
+dog_homolog$ENSEMBL <- sapply(dog_homolog$homolog, getEnsblId)
 
-d <- merge(dog, symbs, by.x="ENSEMBL", by.y="ENSEMBL", all.x=T)
-write.table(d[,c(1,3,4,5,12,13)], 'dog_annots_only_id_with_symbol.txt',
-                sep='\t', quote=F, col.names=TRUE)
+ortho_symbs <- select(org.Cf.eg.db, keys=dog_ortholog$ENSEMBL,
+                      keytype="ENSEMBL", columns=c("SYMBOL", "ENTREZID"))
+homo_symbs <- select(org.Cf.eg.db, keys=dog_homolog$ENSEMBL,
+                     keytype="ENSEMBL", columns=c("SYMBOL", "ENTREZID"))
+
+dortho <- merge(dog_ortholog, ortho_symbs, by.x="ENSEMBL", by.y="ENSEMBL", all.x=T)
+dhomo <- merge(dog_homolog, homo_symbs, by.x="ENSEMBL", by.y="ENSEMBL", all.x=T)
+write.table(dortho[,c(1,3,4,5,12,13)],
+            'dog_orthologs_only_id_with_symbol.txt',
+            sep='\t', quote=F, col.names=TRUE)
+
+write.table(dhomo[,c(1,3,4,5,12,13)],
+            'dog_homologs_only_id_with_symbol.txt',
+            sep='\t', quote=F, col.names=TRUE)
 
 alldog <- read.csv('mirounga-dog.fa.annot.csv', header=T,
                 stringsAsFactor=F)

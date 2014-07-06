@@ -20,10 +20,10 @@ def split(infile):
         trid = line[0]
 
         if orthol != '':
-            orthol = line[3].split('|')[-2]
+            orthol = line[3].split('|')[-2].split('.')[0]
             writer1.writerow([trid, line[3], orthol])
         if homol != '':
-            homol = line[5].split('|')[-2]
+            homol = line[5].split('|')[-2].split('.')[0]
             writer2.writerow([trid, line[5], homol])
 
 

@@ -47,7 +47,7 @@ def main():
 
     alldata = load_data(pathdir, colname)
     select(alldata, nondegenes).to_csv(
-            'sorted-non-degenes-by-total-%s.txt' % colname,
+            'sorted-non-degenes-by-total-%s.2.txt' % colname,
             sep='\t')
 
 

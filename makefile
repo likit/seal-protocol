@@ -18,3 +18,8 @@ annotate-mouse-unannotated-seq:
 		mian.x.mammals.homol
 	python $(eelprotocol)/make-reciprocal-best-hits.py mian.x.mammals \
 		mammals.x.mian mian.x.mammals.ortho
+
+plot-venn-diagram:
+
+	python $(protocol)/scripts/venn-diagram.py \
+		mirounga-dog.fa.annot.csv trinity-mirounga.mouse.fa.annot.csv.fixed

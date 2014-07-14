@@ -9,4 +9,10 @@ rsem-degenes-to-kegg:
 
 sort-non-degenes-by-expected-count:
 
-	python scripts/sort-non-degenes-by-col.py non-degenes.txt expected_count .
+	python $(protocol)/scripts/sort-non-degenes-by-col.py \
+		non-degenes.txt expected_count .
+
+plot-venn-diagram:
+
+	python $(protocol)/scripts/venn-diagram.py \
+		mirounga-dog.fa.annot.csv trinity-mirounga.mouse.fa.annot.csv.fixed

@@ -59,15 +59,17 @@ get_genes_kegg = function(c, data, prefix)
 {
   m = match(xx[[c]], data$ENTREZID)
   mm = m[!is.na(m)]
-  d = data.frame(c, data[mm,]$Row.names, data[mm,]$ENTREZID)
+  d = data.frame(c, data[mm,]$REFSEQ, data[mm,]$ENSEMBL,
+                 data[mm,]$ENTREZID, data[mm,]$SYMBOL)
   
   filename = paste(prefix, c, sep="_")
   write.table(d, filename, sep="\t", row.names=F, col.names=F, quote=F)
   return(d)
 }
-df <- lapply(KEGG.sig$category, get_genes_kegg,
-            uniq.annotated.degenes,
-            "mouse-annot-kegg")
+df <- lapply(head(KEGG_SIG, n=20)$category,
+             get_genes_kegg,
+            d, "mouse-annot-kegg")
 
 write.table(d, 'mouse-annotated-ensembl.txt', sep='\t',
-            quote=F, row.names=F)
+            quote=T, row.names=F,
+            )

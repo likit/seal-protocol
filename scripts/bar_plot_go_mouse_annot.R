@@ -31,12 +31,7 @@ plot_go <- function(d, term) {
     labs(list(title=paste("Number of Genes in Top", term, "Terms"),
               x="Terms", y="Number"))
 }
-pdf("mouse-annotated-bar-bp-plot.pdf", width=8, height=7)
+png("mouse-annotated-bar-bp-plot.png", width=8, height=7,
+    res=300, units='in')
 plot_go(d, "BP")
-dev.off()
-pdf("mouse-annotated-bar-mf-plot.pdf", width=8, height=7)
-plot_go(d, "MF")
-dev.off()
-pdf("mouse-annotated-bar-cc-plot.pdf", width=8, height=7)
-plot_go(d, "CC")
 dev.off()

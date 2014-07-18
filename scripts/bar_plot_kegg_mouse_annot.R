@@ -21,7 +21,9 @@ td <- td[order(td$Freq, decreasing=TRUE),]
 toptd <- td[1:20,]
 pathway = stack(mget(as.character(toptd$Var1), KEGGPATHID2NAME))
 toptd$pathway = pathway$values
-pdf("mouse-annotated-kegg-bar-plot.pdf", width=8, height=7)
+png("mouse-annotated-kegg-bar-plot.png",
+    res=300, units='in',
+    width=8, height=7)
 ggplot(toptd, aes(x=reorder(pathway, Freq), y=Freq)) +
   theme_bw() +
   geom_bar(stat="identity") +

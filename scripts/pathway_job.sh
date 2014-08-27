@@ -8,7 +8,7 @@
 module load BEDTools
 module load bowtie
 module load BLAST
-export PATH=$PATH:/mnt/ls12/preeyanon/seal/rsem-1.2.8/
+export PATH=$PATH:~/rsem-1.2.7
 
 cd ${PBS_O_WORKDIR}
 

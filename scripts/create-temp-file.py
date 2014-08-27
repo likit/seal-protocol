@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-'''Runs CDHIT on each transcript family.'''
+'''Create a temp file for each family for CDHIT.'''
 
 import sys
 import subprocess as sp
